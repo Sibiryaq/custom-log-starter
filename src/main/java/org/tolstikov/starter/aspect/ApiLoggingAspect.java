@@ -10,6 +10,9 @@ import org.tolstikov.starter.config.LoggingProperties;
 
 import java.util.Arrays;
 
+/**
+ * Аспект для логирования вызовов методов, аннотированных {@link LogApi}.
+ */
 @Aspect
 @Component
 @Slf4j
@@ -21,6 +24,15 @@ public class ApiLoggingAspect {
         this.props = props;
     }
 
+    /**
+     * Обработчик для методов, аннотированных {@link LogApi}.
+     * Логирует вызовы методов, их аргументы, время выполнения и результат.
+     *
+     * @param joinPoint точка соединения
+     * @param logApi    аннотация логирования
+     * @return результат выполнения метода
+     * @throws Throwable если возникает исключение
+     */
     @Around("@annotation(logApi)")
     public Object logExecution(ProceedingJoinPoint joinPoint, LogApi logApi) throws Throwable {
         if (!props.isEnabled()) {
@@ -41,6 +53,12 @@ public class ApiLoggingAspect {
         return result;
     }
 
+    /**
+     * Логирует сообщение с указанным уровнем логирования.
+     *
+     * @param message сообщение для логирования
+     * @param args    аргументы для сообщения
+     */
     private void logMessage(String message, Object... args) {
         switch (props.getLevel().toLowerCase()) {
             case "debug" -> log.debug(message, args);

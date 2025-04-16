@@ -2,6 +2,9 @@ package org.tolstikov.starter.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Настройки логирования.
+ */
 @ConfigurationProperties(prefix = "custom.logging")
 public class LoggingProperties {
     private boolean enabled = true;
